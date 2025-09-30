@@ -8,13 +8,46 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root{ --brand:#059669; --accent:#E11D48; --bg-soft:#FFFBF7; --pink-soft:#FCE7F3; --text:#1F2937; --shadow:0 10px 30px rgba(0,0,0,.08); --radius:18px; }
+  :root{
+    --brand:#059669; --accent:#E11D48; --bg-soft:#FFFBF7; --pink-soft:#FCE7F3; --text:#1F2937;
+    --shadow:0 10px 30px rgba(0,0,0,.08); --radius:18px;
+  }
   html,body{margin:0; font-family:"Tajawal", system-ui; color:var(--text); background:#fff;}
   .container{max-width:1200px; margin:auto; padding:1rem;}
-  .hero{ position:relative; min-height:68vh; display:grid; align-items:center; padding:2rem 1rem; overflow:hidden; isolation:isolate; }
-  .hero video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; filter:saturate(1.05) contrast(1.05); transform:translateZ(0); }
-  .hero::before{ content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.25) 55%, rgba(0,0,0,.15) 100%); }
-  .hero-content{ max-width:720px; background:rgba(255,255,255,.82); backdrop-filter:saturate(140%) blur(6px); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.4rem; }
+
+  /* ===== Hero بخلفية فيديو ===== */
+  .hero{
+    position:relative;
+    min-height:68vh;
+    display:grid;
+    align-items:center;
+    padding:2rem 1rem;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    z-index:-2;
+    filter:saturate(1.05) contrast(1.05);
+    transform:translateZ(0);
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    z-index:-1;
+    background:linear-gradient(90deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.25) 55%, rgba(0,0,0,.15) 100%);
+  }
+  .hero-content{
+    max-width:720px;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:saturate(140%) blur(6px);
+    -webkit-backdrop-filter:saturate(140%) blur(6px);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:1.4rem;
+  }
   .pill{background:var(--bg-soft); padding:.3rem .6rem; border-radius:999px; font-size:.85rem}
   .hero h1{margin:.4rem 0; font-size:2rem}
   .hero p{line-height:1.8}
@@ -22,6 +55,7 @@
   .btn{border:none; border-radius:14px; padding:.7rem 1.1rem; font-weight:700; cursor:pointer}
   .btn-primary{background:var(--accent); color:#fff}
   .btn-secondary{background:var(--pink-soft); color:#1F2937}
+
   .section{padding:2rem 1rem}
   .sec-title{display:flex; align-items:center; gap:.6rem; font-size:1.3rem; margin-bottom:1rem}
   .grid{display:grid; gap:1rem; grid-template-columns:repeat(3,1fr)}
@@ -29,8 +63,10 @@
   .card img{width:100%; height:200px; object-fit:cover; display:block}
   .card-body{padding:1rem}
   .price{color:var(--brand); font-weight:800}
+
   .why{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
   .why .feature{background:#fff; border-radius:var(--radius); padding:1rem; box-shadow:var(--shadow)}
+
   .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.5)}
   .modal.open{display:grid}
   .modal .box{background:#fff; width:min(600px,92vw); border-radius:16px; padding:1rem}
@@ -38,77 +74,335 @@
   .results{margin-top:.6rem; max-height:220px; overflow:auto}
   .result{padding:.6rem; border-radius:10px}
   .result:hover{background:#f7f7f7}
-  .wa{position:fixed; bottom:16px; left:16px; background:#25D366; color:#fff; width:54px; height:54px; border-radius:50%; display:grid; place-items:center; text-decoration:none; font-size:1.4rem; box-shadow:var(--shadow)}
-  @media (prefers-reduced-motion: reduce){ .hero video{display:none;} .hero{background:linear-gradient(180deg,#fff,var(--bg-soft));} }
-  @media(max-width:980px){ .grid{grid-template-columns:repeat(2,1fr)} .why{grid-template-columns:1fr 1fr} .hero{min-height:56vh} }
-  @media(max-width:640px){ .grid{grid-template-columns:1fr} .why{grid-template-columns:1fr} }
+
+  .wa{position:fixed; bottom:16px; left:16px; background:#25D366; color:#fff; width:54px; height:54px; border-radius:50%;
+      display:grid; place-items:center; text-decoration:none; font-size:1.4rem; box-shadow:var(--shadow)}
+
+  @media (prefers-reduced-motion: reduce){
+    .hero video{display:none;}
+    .hero{background:linear-gradient(180deg,#fff,var(--bg-soft));}
+  }
+
+  @media(max-width:980px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .why{grid-template-columns:1fr 1fr}
+    .hero{min-height:56vh}
+  }
+  @media(max-width:640px){
+    .grid{grid-template-columns:1fr}
+    .why{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
 
+<!-- استدعاء القوالب -->
 <div id="header-slot" data-include="header.html"></div>
 
-<main class="container" role="main">
-  <!-- المحتوى الأساسي -->
-  <!-- ... (نفس الأقسام السابقة للتصنيفات والأكثر مبيعًا) ... -->
+<main id="main" class="container" role="main">
+  <!-- ===== HERO مع فيديو خلفية ===== -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="poster.jpg">
+      <source src="v14044g50000d06b9evog65r0j8ri0v0.MP4" type="video/mp4">
+      متصفحك لا يدعم تشغيل الفيديو.
+    </video>
+
+    <div class="hero-content">
+      <span class="pill">توصيل نفس اليوم في معظم المدن</span>
+      <h1 id="heroTitle">أرسل وردًا يلامس القلب</h1>
+      <p>اختاري من تشكيلتنا الفاخرة من الباقات الموسمية مع تغليف أنيق وبطاقات معايدة مكتوبة بخط جميل.</p>
+      <div class="cta">
+        <a href="#bestsellers" class="btn btn-primary">تصفّح الأكثر مبيعًا</a>
+        <a href="#collections" class="btn btn-secondary" data-open-search>ابحث سريعًا</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- التصنيفات -->
+  <section id="collections" class="section" aria-labelledby="collectionsTitle">
+    <h2 class="sec-title" id="collectionsTitle">التصنيفات</h2>
+    <div class="grid">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1200&auto=format&fit=crop" alt="باقات المناسبات">
+        <div class="card-body">
+          <h3>باقات المناسبات</h3>
+          <p>تصاميم فاخرة لحفلات الخطوبة والنجاح.</p>
+        </div>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1485893086445-ed75865251e0?q=80&w=1200&auto=format&fit=crop" alt="ورد يومي">
+        <div class="card-body">
+          <h3>ورد يومي</h3>
+          <p>لمسة منعشة لمنزلك أو مكتبك.</p>
+        </div>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1487014679447-9f8336841d58?q=80&w=1200&auto=format&fit=crop" alt="هدايا مميزة">
+        <div class="card-body">
+          <h3>هدايا مميزة</h3>
+          <p>صناديق ورد مع شوكولاتة وبطاقات.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- الأكثر مبيعًا -->
+  <section id="bestsellers" class="section" aria-labelledby="bestTitle">
+    <h2 class="sec-title" id="bestTitle">الأكثر مبيعًا</h2>
+    <div class="grid">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="باقة ورد أحمر">
+        <div class="card-body">
+          <h3>باقة الحب</h3>
+          <div class="price">149 ر.س</div>
+          <button class="btn btn-primary" data-add="1">أضف للسلة</button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1464965911861-746a04b4bca6?q=80&w=1200&auto=format&fit=crop" alt="باقة ورد أبيض">
+        <div class="card-body">
+          <h3>أناقة بيضاء</h3>
+          <div class="price">169 ر.س</div>
+          <button class="btn btn-primary" data-add="2">أضف للسلة</button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1490551632573-78c5f3e4c62a?q=80&w=1200&auto=format&fit=crop" alt="باقة ورد ملون">
+        <div class="card-body">
+          <h3>بهجة الألوان</h3>
+          <div class="price">139 ر.س</div>
+          <button class="btn btn-primary" data-add="3">أضف للسلة</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- لماذا نحن -->
+  <section id="why-us" class="section" aria-labelledby="whyTitle">
+    <h2 class="sec-title" id="whyTitle">لماذا متجر الورود؟</h2>
+    <div class="why">
+      <div class="feature"><strong>توصيل سريع</strong><br>شركاء توصيل موثوقون داخل المملكة.</div>
+      <div class="feature"><strong>تغليف فاخر</strong><br>تفاصيل أنيقة وبطاقات معايدة مجانية.</div>
+      <div class="feature"><strong>ضمان الرضا</strong><br>استرجاع أو تعويض بسياسة واضحة.</div>
+    </div>
+  </section>
+
+  <!-- تواصل -->
+  <section id="contact" class="section" aria-labelledby="contactTitle">
+    <h2 class="sec-title" id="contactTitle">تواصل معنا</h2>
+    <form id="contactForm" class="card" style="padding:1rem" novalidate>
+      <div style="display:grid; gap:.6rem; grid-template-columns:1fr 1fr">
+        <input required name="name" placeholder="الاسم" aria-label="الاسم" style="padding:.6rem; border:1px solid #ddd; border-radius:12px;">
+        <input required name="phone" placeholder="الجوال" aria-label="الجوال" inputmode="tel" style="padding:.6rem; border:1px solid #ddd; border-radius:12px;">
+      </div>
+      <textarea required name="msg" placeholder="رسالتك" aria-label="رسالتك" style="margin-top:.6rem; padding:.6rem; border:1px solid #ddd; border-radius:12px; min-height:110px"></textarea>
+      <div style="display:flex; gap:.6rem; margin-top:.6rem; align-items:center">
+        <button class="btn btn-primary">إرسال</button>
+        <small id="contactStatus" role="status" aria-live="polite"></small>
+      </div>
+    </form>
+  </section>
 </main>
 
 <div id="footer-slot" data-include="footer.html"></div>
+
 <a class="wa" href="https://wa.me/966500000000" target="_blank" rel="noopener" aria-label="تواصل واتساب">✆</a>
 
 <div class="modal" id="searchModal" role="dialog" aria-modal="true" aria-label="بحث">
   <div class="box">
-    <input type="search" id="searchInput" placeholder="ابحث عن باقة، لون، مناسبة..." aria-label="حقل البحث">
+    <input type="search" id="searchInput" placeholder="ابحث عن باقة، لون، مناسبة..." aria-label="حقل البحث" autocapitalize="off" autocomplete="off" spellcheck="false">
     <div class="results" id="searchResults" role="listbox" aria-label="نتائج البحث"></div>
   </div>
 </div>
 
+<!-- سكربت موحّد ومعزول -->
 <script type="module">
 (() => {
+  // حارس يمنع التهيئة المكررة إن تم إدراج السكربت أكثر من مرة بالخطأ
   if (window.FlowersApp?.__initialized) return;
 
-  const modal   = document.getElementById('searchModal');
-  const input   = document.getElementById('searchInput');
-  const results = document.getElementById('searchResults');
-
+  // كائن عالمي وحيد للتكامل مع الهيدر وغيره
   const FlowersApp = {
     __initialized: false,
-    openSearch(){ modal.classList.add('open'); input?.focus(); },
-    closeSearch(){ modal.classList.remove('open'); if(input) input.value=''; results.innerHTML=''; }
+    // فتح/إغلاق البحث (يمكن للهيدر استدعاؤها أو إطلاق أحداث flowers:open-search)
+    openSearch() {
+      modal.classList.add('open');
+      queueMicrotask(() => input?.focus());
+    },
+    closeSearch() {
+      modal.classList.remove('open');
+      if (input) input.value = '';
+      results.innerHTML = '';
+    }
   };
   window.FlowersApp = FlowersApp;
-  window.openSearchModal = FlowersApp.openSearch; // للتوافق مع الهيدر
 
-  // دعم الحدث القديم
-  window.addEventListener('trigger-search', FlowersApp.openSearch);
-  // دعم الحدث الجديد
-  window.addEventListener('flowers:open-search', FlowersApp.openSearch);
+  // عناصر مشتركة
+  const modal = document.getElementById('searchModal');
+  const input = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
 
-  // ربط أزرار
-  document.addEventListener('click', e=>{
-    if(e.target.closest('[data-open-search]') || e.target.id==='headerSearchBtn'){ 
-      e.preventDefault(); FlowersApp.openSearch(); 
+  // ===== تضمين القوالب بأمان مع إدارة أخطاء =====
+  (async function includePartials(){
+    const slots = document.querySelectorAll('[data-include]');
+    for (const el of slots){
+      const url = el.getAttribute('data-include');
+      try{
+        const res = await fetch(url, {
+          credentials:'same-origin',
+          headers: { 'Accept': 'text/html' },
+          cache: 'no-store',
+        });
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        // ملاحظة: innerHTML لا ينفّذ سكربتات مضمنة داخل الجزء — هذا متعمّد لتجنّب التعارض.
+        el.innerHTML = await res.text();
+        // ربط أي أزرار داخل الهيدر تحمل data-open-search بدون الاعتماد على أسماء دوال عامة
+        el.querySelectorAll('[data-open-search]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            FlowersApp.openSearch();
+          }, { passive:true });
+        });
+      }catch(err){
+        console.error('Include failed for', url, err);
+        el.innerHTML = '<div style="padding:1rem;color:#b91c1c;background:#fee2e2;border-radius:12px">تعذّر تحميل الجزء: '+url+'</div>';
+      }
     }
-  });
+  })();
 
-  // البحث المحلي
-  input?.addEventListener('input', ()=>{
-    const q=(input.value||'').trim(); results.innerHTML='';
-    if(!q) return;
-    const items=[...document.querySelectorAll('.card h3')].map(h=>({title:h.textContent,el:h.closest('.card')}));
-    const filtered=items.filter(i=>i.title.includes(q));
-    if(!filtered.length){ results.innerHTML='<div class="result">لا نتائج</div>'; return;}
-    filtered.forEach(i=>{
-      const a=document.createElement('a'); a.href='#'+i.el.closest('section').id;
-      a.className='result'; a.textContent=i.title; results.appendChild(a);
+  // ===== تشغيل الفيديو بموثوقية =====
+  (function(){
+    const v = document.getElementById('heroVideo');
+    if(!v) return;
+
+    const safePlay = async () => {
+      try{
+        if(v.paused) await v.play();
+      }catch(e){
+        // على بعض الأجهزة يتطلب تفاعل المستخدم
+        const resume = () => { safePlay(); window.removeEventListener('click', resume); };
+        window.addEventListener('click', resume, { once:true });
+      }
+    };
+
+    v.addEventListener('ended', () => { v.currentTime = 0; v.play().catch(()=>{}); });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) v.pause(); else safePlay();
     });
-  });
+    safePlay();
+  })();
 
-  // ESC يغلق البحث
-  window.addEventListener('keydown', e=>{ if(e.key==='Escape') FlowersApp.closeSearch(); });
+  // ===== البحث المحلي (بدون سيرفر) مع Debounce وأسماء أحداث مميزة =====
+  (function(){
+    if(!modal || !input || !results) return;
 
-  FlowersApp.__initialized=true;
+    const debounce = (fn, ms=180) => {
+      let t; return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+    };
+
+    const runSearch = () => {
+      const q = (input.value || '').trim();
+      results.innerHTML = '';
+      if(q.length < 1) return;
+      const items = [...document.querySelectorAll('.card h3')].map(h=>({title:h.textContent, el:h.closest('.card')}));
+      const filtered = items.filter(i=> i.title.includes(q));
+      if(!filtered.length){ results.innerHTML = '<div class="result">لا نتائج</div>'; return; }
+      const frag = document.createDocumentFragment();
+      filtered.forEach(i=>{
+        const a = document.createElement('a');
+        a.href = '#'+i.el.closest('section').id;
+        a.className='result';
+        a.textContent = i.title;
+        frag.appendChild(a);
+      });
+      results.appendChild(frag);
+    };
+
+    input.addEventListener('input', debounce(runSearch), { passive:true });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') FlowersApp.closeSearch(); });
+
+    // دعم مفاتيح شائعة للبحث (Ctrl/Cmd+K) بدون تعارض مع تطبيقات أخرى بفضل الأسماء المميزة
+    window.addEventListener('keydown', (e)=>{
+      const isMetaK = (e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey);
+      if(isMetaK){ e.preventDefault(); FlowersApp.openSearch(); }
+    });
+
+    // فتح من أزرار تحمل data-open-search (سواء في الهيدر أو الصفحة)
+    document.addEventListener('click', (e)=>{
+      const trigger = e.target.closest('[data-open-search]');
+      if(!trigger) return;
+      e.preventDefault();
+      FlowersApp.openSearch();
+    }, { passive:false });
+
+    // فتح عبر حدث مخصص من الهيدر: window.dispatchEvent(new CustomEvent('flowers:open-search'))
+    window.addEventListener('flowers:open-search', () => FlowersApp.openSearch());
+  })();
+
+  // ===== إشعار إضافة للسلة (Toast) معزول =====
+  (function(){
+    const toastEl = document.createElement('div');
+    Object.assign(toastEl.style, {
+      position:'fixed', right:'16px', bottom:'16px',
+      background:'#111', color:'#fff', padding:'.6rem 1rem',
+      borderRadius:'12px', opacity:'0', transition:'opacity .2s', zIndex:9999
+    });
+    document.body.appendChild(toastEl);
+
+    const toast = (msg)=>{ toastEl.textContent=msg; toastEl.style.opacity='1'; setTimeout(()=>toastEl.style.opacity='0', 1600); };
+
+    document.addEventListener('click',(e)=>{
+      const btn = e.target.closest('[data-add]');
+      if(!btn) return;
+      // نقطة تكامل مستقبلية: استدعاء API آمن عبر HTTPS + JWT/OAuth2
+      toast('تمت الإضافة إلى السلة ✓');
+    }, { passive:true });
+  })();
+
+  // ===== نموذج التواصل: تحقق أساسي + جاهزية HTTPS/JWT =====
+  (function(){
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('contactStatus');
+    if(!form || !status) return;
+
+    const validPhone = (p)=> /^[0-9\-\+\s]{8,15}$/.test((p||'').trim());
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = (fd.get('name')||'').trim();
+      const phone = (fd.get('phone')||'').trim();
+      const msg = (fd.get('msg')||'').trim();
+
+      if(!name || !validPhone(phone) || !msg){
+        status.textContent='يرجى تعبئة الحقول بشكل صحيح.';
+        return;
+      }
+
+      try{
+        // مثال جاهز للتوصيل مع خادمك عبر HTTPS + JWT:
+        // const token = localStorage.getItem('jwt');
+        // const res = await fetch('https://api.yourdomain.sa/contact', {
+        //   method:'POST',
+        //   headers:{'Content-Type':'application/json', ...(token?{'Authorization':'Bearer '+token}:{})},
+        //   body:JSON.stringify({name, phone, msg, source:'flowers-landing'}),
+        //   keepalive: true, // ليعمل حتى عند إغلاق الصفحة
+        // });
+        // if(!res.ok) throw new Error('HTTP '+res.status);
+
+        status.textContent='تم الإرسال بنجاح، سنعود إليك قريبًا.';
+        form.reset();
+      }catch(err){
+        console.error(err);
+        status.textContent='حدث خطأ أثناء الإرسال. حاول لاحقًا.';
+      }
+    });
+  })();
+
+  FlowersApp.__initialized = true;
 })();
 </script>
 </body>
 </html>
+
+
