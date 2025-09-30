@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>متجر الورود — الرئيسية</title>
+<meta name="description" content="متجر الورود: باقات ورد فاخرة وتوصيل سريع داخل السعودية.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --brand:#059669; --accent:#E11D48; --bg-soft:#FFFBF7; --pink-soft:#FCE7F3; --text:#1F2937; --shadow:0 10px 30px rgba(0,0,0,.08); --radius:18px; }
+  html,body{margin:0; font-family:"Tajawal", system-ui; color:var(--text); background:#fff;}
+  .container{max-width:1200px; margin:auto; padding:1rem;}
+  .hero{ position:relative; min-height:68vh; display:grid; align-items:center; padding:2rem 1rem; overflow:hidden; isolation:isolate; }
+  .hero video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; filter:saturate(1.05) contrast(1.05); transform:translateZ(0); }
+  .hero::before{ content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.25) 55%, rgba(0,0,0,.15) 100%); }
+  .hero-content{ max-width:720px; background:rgba(255,255,255,.82); backdrop-filter:saturate(140%) blur(6px); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.4rem; }
+  .pill{background:var(--bg-soft); padding:.3rem .6rem; border-radius:999px; font-size:.85rem}
+  .hero h1{margin:.4rem 0; font-size:2rem}
+  .hero p{line-height:1.8}
+  .cta{display:flex; gap:.6rem; margin-top:1rem}
+  .btn{border:none; border-radius:14px; padding:.7rem 1.1rem; font-weight:700; cursor:pointer}
+  .btn-primary{background:var(--accent); color:#fff}
+  .btn-secondary{background:var(--pink-soft); color:#1F2937}
+  .section{padding:2rem 1rem}
+  .sec-title{display:flex; align-items:center; gap:.6rem; font-size:1.3rem; margin-bottom:1rem}
+  .grid{display:grid; gap:1rem; grid-template-columns:repeat(3,1fr)}
+  .card{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
+  .card img{width:100%; height:200px; object-fit:cover; display:block}
+  .card-body{padding:1rem}
+  .price{color:var(--brand); font-weight:800}
+  .why{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+  .why .feature{background:#fff; border-radius:var(--radius); padding:1rem; box-shadow:var(--shadow)}
+  .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.5)}
+  .modal.open{display:grid}
+  .modal .box{background:#fff; width:min(600px,92vw); border-radius:16px; padding:1rem}
+  .modal input{width:100%; padding:.7rem .9rem; border:1px solid #ddd; border-radius:12px; font-family:inherit}
+  .results{margin-top:.6rem; max-height:220px; overflow:auto}
+  .result{padding:.6rem; border-radius:10px}
+  .result:hover{background:#f7f7f7}
+  .wa{position:fixed; bottom:16px; left:16px; background:#25D366; color:#fff; width:54px; height:54px; border-radius:50%; display:grid; place-items:center; text-decoration:none; font-size:1.4rem; box-shadow:var(--shadow)}
+  @media (prefers-reduced-motion: reduce){ .hero video{display:none;} .hero{background:linear-gradient(180deg,#fff,var(--bg-soft));} }
+  @media(max-width:980px){ .grid{grid-template-columns:repeat(2,1fr)} .why{grid-template-columns:1fr 1fr} .hero{min-height:56vh} }
+  @media(max-width:640px){ .grid{grid-template-columns:1fr} .why{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<div id="header-slot" data-include="header.html"></div>
+
+<main class="container" role="main">
+  <!-- المحتوى الأساسي -->
+  <!-- ... (نفس الأقسام السابقة للتصنيفات والأكثر مبيعًا) ... -->
+</main>
+
+<div id="footer-slot" data-include="footer.html"></div>
+<a class="wa" href="https://wa.me/966500000000" target="_blank" rel="noopener" aria-label="تواصل واتساب">✆</a>
+
+<div class="modal" id="searchModal" role="dialog" aria-modal="true" aria-label="بحث">
+  <div class="box">
+    <input type="search" id="searchInput" placeholder="ابحث عن باقة، لون، مناسبة..." aria-label="حقل البحث">
+    <div class="results" id="searchResults" role="listbox" aria-label="نتائج البحث"></div>
+  </div>
+</div>
+
+<script type="module">
+(() => {
+  if (window.FlowersApp?.__initialized) return;
+
+  const modal   = document.getElementById('searchModal');
+  const input   = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+
+  const FlowersApp = {
+    __initialized: false,
+    openSearch(){ modal.classList.add('open'); input?.focus(); },
+    closeSearch(){ modal.classList.remove('open'); if(input) input.value=''; results.innerHTML=''; }
+  };
+  window.FlowersApp = FlowersApp;
+  window.openSearchModal = FlowersApp.openSearch; // للتوافق مع الهيدر
+
+  // دعم الحدث القديم
+  window.addEventListener('trigger-search', FlowersApp.openSearch);
+  // دعم الحدث الجديد
+  window.addEventListener('flowers:open-search', FlowersApp.openSearch);
+
+  // ربط أزرار
+  document.addEventListener('click', e=>{
+    if(e.target.closest('[data-open-search]') || e.target.id==='headerSearchBtn'){ 
+      e.preventDefault(); FlowersApp.openSearch(); 
+    }
+  });
+
+  // البحث المحلي
+  input?.addEventListener('input', ()=>{
+    const q=(input.value||'').trim(); results.innerHTML='';
+    if(!q) return;
+    const items=[...document.querySelectorAll('.card h3')].map(h=>({title:h.textContent,el:h.closest('.card')}));
+    const filtered=items.filter(i=>i.title.includes(q));
+    if(!filtered.length){ results.innerHTML='<div class="result">لا نتائج</div>'; return;}
+    filtered.forEach(i=>{
+      const a=document.createElement('a'); a.href='#'+i.el.closest('section').id;
+      a.className='result'; a.textContent=i.title; results.appendChild(a);
+    });
+  });
+
+  // ESC يغلق البحث
+  window.addEventListener('keydown', e=>{ if(e.key==='Escape') FlowersApp.closeSearch(); });
+
+  FlowersApp.__initialized=true;
+})();
+</script>
+</body>
+</html>

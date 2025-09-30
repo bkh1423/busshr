@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>رأس الموقع - متجر الورود</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- أيقونة المتصفح (فايفكون) من نفس الصورة -->
+<link rel="icon" href="vvvfff.png" type="image/png" />
+<link rel="apple-touch-icon" href="vvvfff.png" />
+
+<style>
+  :root{
+    --brand:#059669; /* أخضر */
+    --accent:#E11D48; /* وردي */
+    --bg-soft:#FFFBF7;
+    --pink-soft:#FCE7F3;
+    --text:#1F2937;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+    --radius:18px;
+  }
+  body{margin:0;font-family:"Tajawal", system-ui, -apple-system, "Segoe UI", Arial;}
+  .topbar{background:var(--bg-soft); color:var(--text); font-size:.9rem; padding:.4rem 1rem; text-align:center}
+  .header{position:sticky; top:0; z-index:1000; background:#fff; box-shadow:var(--shadow)}
+  .nav{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.9rem 1rem; max-width:1200px; margin:auto}
+  .brand{display:flex; align-items:center; gap:.6rem; text-decoration:none; color:var(--text)}
+  /* شعار دائري من الصورة */
+  .brand-logo{
+    width:42px; height:42px;
+    border-radius:50%;
+    overflow:hidden;
+    display:grid; place-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    border:2px solid #fff; /* حلقة خفيفة */
+    background:linear-gradient(135deg,var(--brand),var(--accent)); /* يظهر لحظة قبل تحميل الصورة */
+  }
+  .brand-logo img{
+    width:100%; height:100%; object-fit:cover; display:block; border-radius:50%;
+    /* حماية بصرية لو الصورة فيها شفافية */
+    background:#fff;
+  }
+  .brand-name{font-weight:800; font-size:1.15rem}
+  .menu{display:flex; align-items:center; gap:1rem}
+  .menu a{ text-decoration:none; color:var(--text); padding:.5rem .8rem; border-radius:12px; }
+  .menu a:hover, .menu a:focus{background:var(--pink-soft); outline:none}
+  .actions{display:flex; align-items:center; gap:.6rem}
+  .btn{ appearance:none; border:none; cursor:pointer; border-radius:14px; padding:.55rem .9rem; font-weight:600; }
+  .btn-cta{background:var(--accent); color:#fff}
+  .btn-ghost{background:transparent; color:var(--text)}
+  .burger{display:none}
+
+  @media (max-width:820px){
+    .menu{display:none}
+    .burger{display:inline-flex; gap:.4rem; align-items:center}
+    .sheet{position:fixed; inset:0 0 0 30%; background:#fff; transform:translateX(100%); transition:transform .3s ease; padding:1rem; box-shadow:var(--shadow)}
+    .sheet.open{transform:translateX(0)}
+    .sheet a{display:block; padding:.8rem; border-radius:12px; color:var(--text); text-decoration:none}
+    .backdrop{position:fixed; inset:0; background:rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .3s}
+    .backdrop.show{opacity:1; pointer-events:auto}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">توصيل سريع داخل السعودية ✿ اطلب قبل 5 مـ للحصول على توصيل اليوم</div>
+
+<header class="header" role="banner" aria-label="شريط علوي">
+  <nav class="nav" aria-label="التنقل الرئيسي">
+    <a class="brand" href="index.html">
+      <!-- الشعار الدائري من الصورة -->
+      <span class="brand-logo" aria-hidden="true">
+        <img src="vvvfff.png" alt="شعار متجر الورود">
+      </span>
+      <span class="brand-name">متجر الورود</span>
+    </a>
+
+    <div class="menu" role="menubar">
+      <a role="menuitem" href="#collections">التصنيفات</a>
+      <a role="menuitem" href="#bestsellers">الأكثر مبيعًا</a>
+      <a role="menuitem" href="#why-us">لماذا نحن</a>
+      <a role="menuitem" href="#contact">تواصل</a>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-ghost" aria-label="بحث" onclick="document.dispatchEvent(new CustomEvent('open-search'))">🔎</button>
+      <a href="#cart" class="btn btn-ghost" aria-label="عربة التسوق">🛒</a>
+      <button class="btn btn-cta" onclick="location.href='#bestsellers'">اطلب الآن</button>
+      <button class="btn burger" id="openMenu" aria-label="فتح القائمة">☰</button>
+    </div>
+  </nav>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="sheet" id="sheet" aria-label="القائمة الجانبية" aria-hidden="true">
+    <a href="#collections">التصنيفات</a>
+    <a href="#bestsellers">الأكثر مبيعًا</a>
+    <a href="#why-us">لماذا نحن</a>
+    <a href="#contact">تواصل</a>
+  </aside>
+</header>
+
+<script>
+/* أمن وأداء:
+  - الاتصالات الخارجية عبر HTTPS فقط.
+  - لا إدخالات مستخدم تُستخدم داخل HTML لتجنّب XSS.
+*/
+(function(){
+  const sheet = document.getElementById('sheet');
+  const backdrop = document.getElementById('backdrop');
+  const openBtn = document.getElementById('openMenu');
+
+  function openSheet(){ sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); backdrop.classList.add('show'); }
+  function closeSheet(){ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); backdrop.classList.remove('show'); }
+
+  openBtn && openBtn.addEventListener('click', openSheet);
+  backdrop && backdrop.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeSheet(); });
+
+  // فتح البحث في index.html
+  document.addEventListener('open-search', ()=>{ window.dispatchEvent(new Event('trigger-search')); });
+})();
+</script>
+</body>
+</html>
